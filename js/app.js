@@ -22,6 +22,15 @@ function doSortObjectsByCost(parameterArray) {
   }
 }
 
+function doRemoveObjectsWithConsumablesNull(parameterArray) {
+  for (var i = 0; i < parameterArray.length; i++) {
+    if (typeof parameterArray[i].consumables === 'object') {
+      parameterArray.splice(i, 1);
+      i--;
+    }
+  }
+}
+
 function getData(url, callbackFunc) {
   var xhttp = new XMLHttpRequest();
   xhttp.onreadystatechange = function () {
@@ -37,6 +46,7 @@ function successAjax(xhttp) {
   // Innen lesz elérhető a JSON file tartalma, tehát az adatok amikkel dolgoznod kell
   var userDatas = JSON.parse(xhttp.responseText);
   doSortObjectsByCost(userDatas);
+  doRemoveObjectsWithConsumablesNull(userDatas);
   console.log(userDatas);
 }
 
