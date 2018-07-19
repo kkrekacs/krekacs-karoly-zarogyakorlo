@@ -73,7 +73,7 @@ function getObjectValuesToDiv(parameterObject) {
   var objectKeys = Object.keys(parameterObject);
   var content = '';
   for (var i = 0; i < objectKeys.length; i++) {
-    if (parameterObject[objectKeys[i]] !== 'image') {
+    if (objectKeys[i] !== 'image') {
       content += `${parameterObject[objectKeys[i]]}<br>`;
     }
   }

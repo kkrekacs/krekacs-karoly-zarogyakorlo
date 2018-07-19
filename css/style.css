@@ -1,3 +1,35 @@
+.spaceship-list div div.item-properties,
+.spaceship-list div div.item-values {
+  display: inline-block;
+  padding: 0;
+  padding: 5px;
+  background-color: rgba(0,0,0,0);
+}
+
+.spaceship-list div div.item-properties {
+  text-align: right;
+  font-weight: bold;
+}
+
+.spaceship-list div img {
+  box-shadow: 0 2px 3px;
+  margin: 5px;
+  max-width: 200px;
+}
+
+.spaceship-list div {
+  background-color: #8baee8;
+  margin: 15px 0px;
+  padding: 0 0 0 5px;
+}
+
+.spaceship-list div:hover {
+  background-color: #6694df;
+  margin: 15px 0px;
+  padding: 0 0 0 5px;
+  cursor: pointer;
+}
+
 body{
   margin:0;
   font-size: 16px;
@@ -6,7 +38,7 @@ body{
 div{
   position:relative;
   box-sizing:border-box;
-  padding: 20px;
+  padding: 5px;
 }
 .container{
   width:100%;
