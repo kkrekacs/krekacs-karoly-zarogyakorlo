@@ -31,6 +31,17 @@ function doRemoveObjectsWithConsumablesNull(parameterArray) {
   }
 }
 
+function setRemainingNullPropertiesToUnknown(parameterArray) {
+  var objectKeys = Object.keys(parameterArray[0]);
+  for (var i = 0; i < parameterArray.length; i++) {
+    for (var j = 0; j < objectKeys.length; j++) {
+      if (parameterArray[i][objectKeys[j]] === null) {
+        parameterArray[i][objectKeys[j]] = 'unknown';
+      }
+    }
+  }
+}
+
 function getData(url, callbackFunc) {
   var xhttp = new XMLHttpRequest();
   xhttp.onreadystatechange = function () {
@@ -47,6 +58,7 @@ function successAjax(xhttp) {
   var userDatas = JSON.parse(xhttp.responseText);
   doSortObjectsByCost(userDatas);
   doRemoveObjectsWithConsumablesNull(userDatas);
+  setRemainingNullPropertiesToUnknown(userDatas);
   console.log(userDatas);
 }
 
