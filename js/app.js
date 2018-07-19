@@ -42,6 +42,64 @@ function setRemainingNullPropertiesToUnknown(parameterArray) {
   }
 }
 
+function getItemImage(parameterObject) {
+  var itemImage = document.createElement('img');
+  itemImage.src = `/img/${parameterObject.image}`;
+  itemImage.alt = parameterObject.model;
+  itemImage.addEventListener('error', function setNewImage() {
+    this.src = '/img/no-image.jpg';
+  });
+
+  return itemImage;
+}
+
+function getObjectKeysToDiv(parameterObject) {
+  var itemPropertiesDiv = document.createElement('div');
+  var objectKeys = Object.keys(parameterObject);
+  var content = '';
+  for (var i = 0; i < objectKeys.length; i++) {
+    if (objectKeys[i] !== 'image') {
+      content += `${objectKeys[i]}:<br>`;
+    }
+  }
+  itemPropertiesDiv.innerHTML = content;
+  itemPropertiesDiv.className = 'item-properties';
+
+  return itemPropertiesDiv;
+}
+
+function getObjectValuesToDiv(parameterObject) {
+  var itemValuesDiv = document.createElement('div');
+  var objectKeys = Object.keys(parameterObject);
+  var content = '';
+  for (var i = 0; i < objectKeys.length; i++) {
+    if (parameterObject[objectKeys[i]] !== 'image') {
+      content += `${parameterObject[objectKeys[i]]}<br>`;
+    }
+  }
+  itemValuesDiv.innerHTML = content;
+  itemValuesDiv.className = 'item-values';
+
+  return itemValuesDiv;
+}
+
+function getItemDiv(parameterObject) {
+  var itemContainerDiv = document.createElement('div');
+  itemContainerDiv.appendChild(getItemImage(parameterObject));
+  itemContainerDiv.appendChild(getObjectKeysToDiv(parameterObject));
+  itemContainerDiv.appendChild(getObjectValuesToDiv(parameterObject));
+  itemContainerDiv.spaceship = parameterObject;
+
+  return itemContainerDiv;
+}
+
+function getSpaceshipList(parameterArray) {
+  var containerDiv = document.querySelector('.spaceship-list');
+  for (var i = 0; i < parameterArray.length; i++) {
+    containerDiv.appendChild(getItemDiv(parameterArray[i]));
+  }
+}
+
 function getData(url, callbackFunc) {
   var xhttp = new XMLHttpRequest();
   xhttp.onreadystatechange = function () {
@@ -59,7 +117,7 @@ function successAjax(xhttp) {
   doSortObjectsByCost(userDatas);
   doRemoveObjectsWithConsumablesNull(userDatas);
   setRemainingNullPropertiesToUnknown(userDatas);
-  console.log(userDatas);
+  getSpaceshipList(userDatas);
 }
 
 getData('/json/spaceships.json', successAjax);
