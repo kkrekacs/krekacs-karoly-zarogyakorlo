@@ -110,17 +110,6 @@ function getSpaceshipList(parameterArray) {
   }
 }
 
-function getData(url, callbackFunc) {
-  var xhttp = new XMLHttpRequest();
-  xhttp.onreadystatechange = function check() {
-    if (this.readyState === 4 && this.status === 200) {
-      callbackFunc(this);
-    }
-  };
-  xhttp.open('GET', url, true);
-  xhttp.send();
-}
-
 function getResultDiv() {
   var rightSideDiv = document.querySelector('.one-spaceship');
   var searchDiv = document.querySelector('.searchbar');
@@ -192,6 +181,42 @@ function getStatistic(parameterArray) {
   containerDiv.appendChild(statisticsDiv);
 }
 
+function getShipByName() {
+  var itemArray = document.querySelectorAll('.ship');
+  var searchingForName = document.querySelector('#search-text');
+  var found = false;
+  var index = 0;
+  while (!found && index < itemArray.length) {
+    if (itemArray[index].spaceship.model.toLowerCase().indexOf(searchingForName.value.toLowerCase()) > -1) {
+      found = true;
+      getClickedOnToResult(itemArray[index].spaceship);
+      searchingForName.value = '';
+    }
+    index++;
+  }
+  if (!found) {
+    document.querySelector('.result').innerHTML = 'No ship found!';
+  }
+}
+
+function doAddSerch() {
+  var textbox = document.querySelector('#search-text');
+  var searchButton = document.querySelector('#search-button');
+  textbox.placeholder = 'Search for shipname';
+  searchButton.addEventListener('click', getShipByName);
+}
+
+function getData(url, callbackFunc) {
+  var xhttp = new XMLHttpRequest();
+  xhttp.onreadystatechange = function check() {
+    if (this.readyState === 4 && this.status === 200) {
+      callbackFunc(this);
+    }
+  };
+  xhttp.open('GET', url, true);
+  xhttp.send();
+}
+
 function successAjax(xhttp) {
   // Innen lesz elérhető a JSON file tartalma, tehát az adatok amikkel dolgoznod kell
   var userDatas = JSON.parse(xhttp.responseText);
@@ -204,4 +229,5 @@ function successAjax(xhttp) {
 
 getData('/json/spaceships.json', successAjax);
 getResultDiv();
+doAddSerch();
 
