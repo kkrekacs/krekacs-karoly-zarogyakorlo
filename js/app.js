@@ -83,12 +83,22 @@ function getObjectValuesToDiv(parameterObject) {
   return itemValuesDiv;
 }
 
+function getClickedOnToResult(parameterObject) {
+  var resultDiv = document.querySelector('.result');
+  resultDiv.innerHTML = '';
+  resultDiv.appendChild(getItemDiv(parameterObject));
+}
+
 function getItemDiv(parameterObject) {
   var itemContainerDiv = document.createElement('div');
   itemContainerDiv.appendChild(getItemImage(parameterObject));
   itemContainerDiv.appendChild(getObjectKeysToDiv(parameterObject));
   itemContainerDiv.appendChild(getObjectValuesToDiv(parameterObject));
   itemContainerDiv.spaceship = parameterObject;
+  itemContainerDiv.addEventListener('click', function getEvent() {
+    getClickedOnToResult(this.spaceship);
+  });
+  itemContainerDiv.className = 'ship';
 
   return itemContainerDiv;
 }
@@ -102,13 +112,84 @@ function getSpaceshipList(parameterArray) {
 
 function getData(url, callbackFunc) {
   var xhttp = new XMLHttpRequest();
-  xhttp.onreadystatechange = function () {
-    if (this.readyState == 4 && this.status == 200) {
+  xhttp.onreadystatechange = function check() {
+    if (this.readyState === 4 && this.status === 200) {
       callbackFunc(this);
     }
   };
   xhttp.open('GET', url, true);
   xhttp.send();
+}
+
+function getResultDiv() {
+  var rightSideDiv = document.querySelector('.one-spaceship');
+  var searchDiv = document.querySelector('.searchbar');
+  var resultDiv = document.createElement('div');
+  resultDiv.className = 'result';
+  rightSideDiv.innerHTML = '';
+  rightSideDiv.appendChild(resultDiv);
+  rightSideDiv.appendChild(searchDiv);
+}
+
+function getSumOfSingleCrewShips(parameterArray) {
+  var sumOfShips = 0;
+  for (var i = 0; i < parameterArray.length; i++) {
+    if (parseInt(parameterArray[i].crew, 10) === 1) {
+      sumOfShips++;
+    }
+  }
+
+  return sumOfShips;
+}
+
+function getShipWithBiggestCargo(parameterArray) {
+  var index = 0;
+  var biggestCargo = parseInt(parameterArray[0].cargo_capacity, 10);
+  for (var i = 1; i < parameterArray.length; i++) {
+    if (biggestCargo < parseInt(parameterArray[i].cargo_capacity, 10)) {
+      index = i;
+      biggestCargo = parseInt(parameterArray[i].cargo_capacity, 10);
+    }
+  }
+
+  return parameterArray[index].model;
+}
+
+function getSumOfPassengers(parameterArray) {
+  var sumOfPassengers = 0;
+  for (var i = 0; i < parameterArray.length; i++) {
+    if  (!isNaN(parseInt(parameterArray[i].passengers, 10))) {
+      sumOfPassengers += parseInt(parameterArray[i].passengers, 10);
+    }
+  }
+
+  return sumOfPassengers;
+}
+
+function getLongestShip(parameterArray) {
+  var index = 0;
+  var longestShip = parseInt(parameterArray[0].lengthiness, 10);
+  for (var i = 1; i < parameterArray.length; i++) {
+    if (longestShip < parseInt(parameterArray[i].lengthiness, 10)) {
+      index = i;
+      longestShip = parseInt(parameterArray[i].lengthiness, 10);
+    }
+  }
+
+  return parameterArray[index].image;
+}
+
+function getStatistic(parameterArray) {
+  var statisticsDiv = document.createElement('div');
+  statisticsDiv.className = 'statistics';
+  var content = '';
+  content += `<b>Egy fős legénységgel rendelkező hajók darabszáma:</b> ${getSumOfSingleCrewShips(parameterArray)}<br>`;
+  content += `<b>A legnagyobb cargo_capacity-vel rendelkező hajó neve:</b> ${getShipWithBiggestCargo(parameterArray)}<br>`;
+  content += `<b>Az összes hajó utasainak összesített száma:</b> ${getSumOfPassengers(parameterArray)}<br>`;
+  content += `<b>A leghosszabb hajó képe:</b> ${getLongestShip(parameterArray)}`;
+  statisticsDiv.innerHTML = content;
+  var containerDiv = document.querySelector('.spaceship-list');
+  containerDiv.appendChild(statisticsDiv);
 }
 
 function successAjax(xhttp) {
@@ -118,6 +199,9 @@ function successAjax(xhttp) {
   doRemoveObjectsWithConsumablesNull(userDatas);
   setRemainingNullPropertiesToUnknown(userDatas);
   getSpaceshipList(userDatas);
+  getStatistic(userDatas);
 }
 
 getData('/json/spaceships.json', successAjax);
+getResultDiv();
+
