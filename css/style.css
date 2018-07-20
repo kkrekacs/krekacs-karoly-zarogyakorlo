@@ -16,12 +16,15 @@
 
 .result {
   color: #fff;
-  font-size: 0.9em;
+  font-size: 0.8em;
+  max-height: 600px;
+  overflow: auto;
 }
 
 .result img {
   display: block;
   padding: 20px;
+  margin: auto;
 }
 
 .spaceship-list div div.item-properties,
@@ -130,11 +133,11 @@ div{
 
 @media(min-width:1200px){
   .spaceship-list{
-    width: 75%;
+    width: 65%;
   }
 
   .one-spaceship{
-    width: 25%;
+    width: 35%;
   }
 
   .container>div{

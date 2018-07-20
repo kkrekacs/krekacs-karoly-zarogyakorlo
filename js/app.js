@@ -196,6 +196,7 @@ function getShipByName() {
   }
   if (!found) {
     document.querySelector('.result').innerHTML = 'No ship found!';
+    searchingForName.value = '';
   }
 }
 
