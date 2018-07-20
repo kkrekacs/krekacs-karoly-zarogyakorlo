@@ -225,9 +225,10 @@ function successAjax(xhttp) {
   setRemainingNullPropertiesToUnknown(userDatas);
   getSpaceshipList(userDatas);
   getStatistic(userDatas);
+  getResultDiv();
+  doAddSerch();
 }
 
 getData('/json/spaceships.json', successAjax);
-getResultDiv();
-doAddSerch();
+
 
